@@ -1,0 +1,3 @@
+manim=0.18.1
+manim-revealjs=1.0.2
+rangehttpserver
