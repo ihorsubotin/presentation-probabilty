@@ -7,6 +7,8 @@
 Репозиторій побудований на основі [manim-revealjs-example](https://github.com/Elteoremadebeethoven/manim-revealjs-example/).
 Сам проект використовує бібліотеку візуалізації [Manim](https://github.com/ManimCommunity/manim), створену ютубером [3Blue1Brown](https://www.youtube.com/@3blue1brown) для своїх відео. Вигляд презентації надає фреймворк [reveal.js](https://github.com/hakimel/reveal.js) в поєднанні з плагіном [manim-revealjs](https://github.com/RickDW/manim-revealjs).
 
+Презентацію можна переглянути [тут](https://ihorsubotin.github.io/presentation-probabilty/)
+
 ## Встановлення
 Для істалювання встановіть залежності python 3. 
 ```
