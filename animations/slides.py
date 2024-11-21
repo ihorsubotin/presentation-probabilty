@@ -2,6 +2,7 @@ from manim import *
 from manim_revealjs import PresentationScene, NORMAL, NO_PAUSE, LOOP, COMPLETE_LOOP
 import math
 import numpy as np
+import random
 
 config.video_dir = "./videos"
 
@@ -369,13 +370,13 @@ class Definitions(PresentationScene):
 		self.end_fragment()
 
 		self.play(Write(f7))
-		f28 = MathTex('F(x \le a) = P(x < a) = P(\emptyset) = 0').scale(0.7).next_to(f7, DOWN*1.2, aligned_edge=LEFT)
+		f28 = MathTex('F(x \le a) = P(\emptyset) = 0').scale(0.8).next_to(f7, DOWN*1.2, aligned_edge=LEFT)
 		self.play(Write(f28))
 		self.end_fragment()
 
 		self.play(Unwrite(f28))
 		self.play(Write(f8))
-		f29 = MathTex('F(x \ge b) = P(x < b) = P(\Omega) = 1').scale(0.7).next_to(f8, DOWN*1.2, aligned_edge=LEFT)
+		f29 = MathTex('F(x \ge b) = P(\Omega) = 1').scale(0.8).next_to(f8, DOWN*1.2, aligned_edge=LEFT)
 		self.play(Write(f29))
 		self.end_fragment()
 
@@ -406,7 +407,7 @@ class Definitions(PresentationScene):
 			y_axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False},
 			x_axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False}).shift(DOWN*1.5+RIGHT*3.5)
 		ax6 = Axes([0, 1], y_range=[0, 0.21, 0.05], x_length=5, y_length=3).shift(DOWN*1.5+RIGHT*3.5)
-		darr6 = arr6*32;
+		darr6 = arr6*32
 		pl10 = polygon_from_arr(darr6, ax6, [0, 1])
 		self.play(Write(VGroup(ax5, pl10)))
 		self.end_fragment()
@@ -426,8 +427,8 @@ class Definitions(PresentationScene):
 		text2 = VGroup(f31, f32, f33, f34).scale(0.9).arrange(direction=DOWN, buff=0.6, aligned_edge=LEFT).shift(RIGHT*3.5 + DOWN*0.5)
 		
 		self.play(Write(f31))
-		pl10 = polygon_from_arr(darr6, ax6, [0.3, 0.7]).set_color(BLUE).set_fill(BLUE, opacity=0.7)
-		self.play(Write(pl10))
+		pl11 = polygon_from_arr(darr6, ax6, [0.3, 0.7]).set_color(BLUE).set_fill(BLUE, opacity=0.7)
+		self.play(Write(pl11))
 		f35 = MathTex('P(a \le x < b) =').scale(0.8).next_to(f31, DOWN*1.2, aligned_edge=LEFT)
 		num1 = DecimalNumber(sarr6[math.floor(0.7*192)] - sarr6[math.floor(0.3*192)]).scale(0.8).next_to(f35, RIGHT*0.3)
 		self.play(Write(VGroup(f35, num1)))
@@ -442,31 +443,39 @@ class Definitions(PresentationScene):
 				number.set_value(p_value)
 				self.play(Transform(polygon, polygon_new, run_time = time))
 
-		transform_graph([0.3, 0.7], [0.5, 0.9], pl10, num1, 60, 0.02)
+		transform_graph([0.3, 0.7], [0.5, 0.9], pl11, num1, 60, 0.02)
 		self.wait()
 
-		transform_graph([0.5, 0.9], [0.7, 0.9], pl10, num1, 60, 0.02)
+		transform_graph([0.5, 0.9], [0.7, 0.9], pl11, num1, 60, 0.02)
 		self.wait()
 
-		transform_graph([0.7, 0.9], [0.1, 0.3], pl10, num1, 60, 0.02)
+		transform_graph([0.7, 0.9], [0.1, 0.3], pl11, num1, 60, 0.02)
 		self.wait()
 		
-		transform_graph([0.1, 0.3], [0.3, 0.7], pl10, num1, 60, 0.02)
+		transform_graph([0.1, 0.3], [0.3, 0.7], pl11, num1, 60, 0.02)
 		self.wait()
 
 		self.end_fragment(fragment_type=LOOP)
 
-		self.play(Unwrite(VGroup(f35, num1, pl10)))
+		self.play(Unwrite(VGroup(f35, num1, pl11)))
 
-		f36 = MathTex('P(a \le x < b) = F(b) - F(a)').scale(0.8).next_to(f31, DOWN*1.2, aligned_edge=LEFT)
-		self.play(Write(f36))
+		f36 = MathTex('P(a \le x < b) ').scale(0.8).next_to(f31, DOWN*1.2, aligned_edge=LEFT)
+		f37 = MathTex('= F(b) - F(a)').scale(0.8).next_to(f36, RIGHT*0.4)
+		self.play(Write(VGroup(f36,f37)))
 		self.end_fragment()
 
-		f37 = MathTex('\int_{a}^{b} f(x) \,dx = F(b) - F(a)').scale(0.8).next_to(f36, DOWN*1.2, aligned_edge=LEFT)
-		self.play(Write(f37))
+		f40  = MathTex('\int_{a}^{b} f(x) \,dx').scale(0.8).next_to(f36, DOWN*1.2, aligned_edge=LEFT)
+		f41 = MathTable('= F(b) - F(a)').scale(0.8).next_to(f40, RIGHT*0.4)
+		self.play(Write(VGroup(f40, f41)))
 		self.end_fragment()
 
-		self.play(Unwrite(VGroup(f36, f37)))
+		f42 = MathTex('P(a \le x < b) ').scale(0.8).next_to(f40, DOWN*1.2, aligned_edge=LEFT)
+		f43 = MathTable('= \int_{a}^{b} f(x) \,dx').scale(0.8).next_to(f42, RIGHT*0.4)
+		self.play(TransformFromCopy(f36, f42))
+		self.play(TransformFromCopy(f40, f43))
+		self.end_fragment()
+
+		self.play(Unwrite(VGroup(f36, f37, f40, f41, f42, f43)))
 		self.play(Write(f32))
 		self.end_fragment()
 		
@@ -513,19 +522,368 @@ class Definitions(PresentationScene):
 		self.play(Transform(t7, t9, run_time=2.5), Unwrite(VGroup(t4, t5, t3, t8)))
 		self.end_fragment()
 
-
-class CreateCircle(PresentationScene):
+class NumericalMean(PresentationScene):
 	def construct(self):
-		circle = Circle()  # create a circle
-		circle.set_fill(PINK, opacity=0.5)  # set the color and transparency
-		self.play(Create(circle))  # show the circle on screen
+		t1 = Text('3. Числові властивості НВВ', font_size=42).align_on_border(UL)
+		self.add(t1)
+		
+		t2 = Text('3.1 Математичне сподівання', font_size=32).align_on_border(UL)
+		self.play(Transform(t1, t2))
 		self.end_fragment()
-		square = Square()
-		square.next_to(circle, RIGHT, buff=0.5) 
-		self.play(Create(square))
-		self.play(square.animate.next_to(circle, UP, buff=0.5))
-		self.play(square.animate.rotate(PI/2).shift(DOWN*5))
+
+		f1 = MathTex('M(X) = ')
+		f2 = MathTex('\sum_{i = 1}^{\infty }')
+		f3 = MathTex('x_{i}')
+		f4 = MathTex('p_{i}')
+		text1 = VGroup(f1, f2, f3, f4).arrange(RIGHT, buff=0.2).shift(UP)
+		self.play(Write(text1))
 		self.end_fragment()
+
+		f5 = MathTex('M(X) = ')
+		f6 = MathTex('\int_{-\infty}^{\infty}')
+		f7 = MathTex('x')
+		f8 = MathTex('f(x)\, dx')
+		text2 = VGroup(f5, f6, f7, f8).arrange(RIGHT, buff=0.2).shift(DOWN)
+		self.play(TransformFromCopy(f1, f5))
+		self.end_fragment()
+		self.play(TransformFromCopy(f2, f6))
+		self.end_fragment()
+		self.play(TransformFromCopy(f3, f7))
+		self.end_fragment()
+		self.play(TransformFromCopy(f4, f8))
+		self.end_fragment()
+
+		f9 = MathTex('\int_{a}^{b}').align_to(f6, UP)
+		self.play(Transform(f6, f9))
+		self.end_fragment()
+		f10 = MathTex('\int_{-\infty}^{\infty}').align_to(f6, UP)
+		self.play(Transform(f6, f10))
+
+		self.play(text2.animate.next_to(t2, DOWN*2, aligned_edge=LEFT), Unwrite(text1))
+
+		def polygon_from_arr(arr, ax, x_range, to_0 = True):
+			num_range = [x_range[0], x_range[1]]
+			if x_range[0] < 0:
+				num_range[0] = 0
+			if x_range[1] > 1:
+				num_range[1] = 1
+			start_i = 0 if x_range[0] < 0 else math.floor(x_range[0]*len(arr))
+			end_i =  len(arr)-1 if x_range[1] > 1 else math.ceil(x_range[1]*(len(arr)-1))
+			coord = []
+			if to_0:
+				coord.extend([[x_range[0], 0], [x_range[0], arr[start_i]]])
+			coord.extend(list(map(lambda i: [num_range[0] + (i-start_i)*(num_range[1] - num_range[0])/(end_i - start_i), arr[i]], range(start_i, end_i))))		
+			coord.append([x_range[1], arr[end_i]])
+			coord.append([x_range[1], 0 if to_0 else arr[start_i]])
+			return Polygon(*ax.coords_to_point(coord), color=YELLOW).set_fill(YELLOW, opacity=0.7)
+
+		def calculate_integral(arr):
+			s = 0
+			res = []
+			for el in arr:
+				s+=el
+				res.append(s)
+			return res
+
+		n = 500
+		arr1 = np.array([math.exp(-((x-125)*9/n)**2)/2 + math.exp(-((x-325)*5/n)**2) for x in range(n)])
+		sum = arr1.sum()
+		arr1 = arr1/sum
+		sarr1 = calculate_integral(arr1)
+		darr1 = arr1*n/4
+
+		ax1 = Axes([0, 4], y_range=[0, 0.51, 0.1], x_length=5, y_length=3, 
+			y_axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False},
+			x_axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False}).shift(DOWN)
+		ax2 = Axes([0, 1], y_range=[0, 0.51, 0.1], x_length=5, y_length=3, 
+			y_axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False},
+			x_axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False}).shift(DOWN)
+		pl1 = polygon_from_arr(darr1, ax2, [0, 1])
+		self.play(Write(VGroup(ax1, pl1)))
+		self.end_fragment()
+
+		M = 0
+		for i in range(n):
+			M += arr1[i] * i
+		M = M*4/n
+		f11 = MathTex('M(X) = ').shift(RIGHT*2+UP*2)
+		num1 = DecimalNumber(M).next_to(f11, RIGHT*0.3)
+		l1 = Line(ax1.coords_to_point(*(M, 0, 0)), ax1.coords_to_point(*(M, 0.51, 0)), color=RED, stroke_width=6)
+		l1t = MathTex('M(X)', font_size=32, color=RED).shift(ax1.coords_to_point(*(M, -0.15)))
+
+		self.play(Write(VGroup(f11, num1, l1, l1t)))
+		self.end_fragment()
+
+		f12 = MathTex('\overline{X} = ').shift(LEFT*6 + DOWN)
+		num2 = DecimalNumber(0).next_to(f12, RIGHT*0.3)
+		self.play(Write(VGroup(f12, num2)))
+
+		l2 = Line(ax1.coords_to_point(*(0, 0, 0)), ax1.coords_to_point(*(0, 0.51, 0)), color=GREEN, stroke_width=6)
+		l2t = MathTex('\overline{X}', font_size=32, color=GREEN).shift(ax1.coords_to_point(*(0, -0.2)))
+		self.end_fragment(fragment_type=NO_PAUSE)
+
+		current_total = 0
+		for i in range(60):
+			srand = random.random()
+			res = -1
+			for j in range(n):
+				if(srand < sarr1[j]):
+					res = j*4/n
+					break
+			l3 = Line(ax1.coords_to_point(*(res, 0, 0)), ax1.coords_to_point(*(res, 0.51, 0)), color=BLUE, stroke_width=4)
+			l3t = MathTex('x', font_size=32).shift(ax1.coords_to_point(*(res, 0.6)))
+			self.play(Write(VGroup(l3, l3t)))
+			current_total += res
+			avg = current_total/(i+1)
+			num2.set_value(avg)
+			l4 = Line(ax1.coords_to_point(*(avg, 0, 0)), ax1.coords_to_point(*(avg, 0.51, 0)), color=GREEN, stroke_width=6)
+			l4t = MathTex('\overline{X}', font_size=32, color=GREEN).shift(ax1.coords_to_point(*(avg, -0.2)))
+			self.play(Transform(l3t, num2), Unwrite(l3), Transform(l2, l4), Transform(l2t, l4t))
+			self.remove(l3t)
+		self.end_fragment(fragment_type=LOOP)
+
+		self.play(Unwrite(VGroup(l2, l2t, f11, num1, f12, num2)))
+		ax2.shift(LEFT*3.5)
+		self.play(VGroup(ax1, pl1, l1, l1t).animate.shift(LEFT*3.5))
+		self.end_fragment()
+
+		f13 = MathTex('1.\,M(C) = C\,, C = const')
+		f14 = MathTex('2.\,M(CX) = C M(X)')
+		f15 = MathTex('3.\,M(\sum_{i=1}^{n}X_{i}) = \sum_{i=1}^{n}M(X_{i})')
+		f16 = MathTex('4.\,M(aX + b) = a M(x) + b')
+		f17 = MathTex('5.\,M(XY) = M(X) M(Y)')
+		f18 = MathTex('6.\,M(X) = 0,\,if\, f(x) = f(-x)')
+		text3 = VGroup(f13, f14, f15, f16, f17, f18).arrange(DOWN, buff=0.4, aligned_edge=LEFT).shift(RIGHT*3.3)
+
+		self.play(Write(f13))
+		self.end_fragment()
+		f19 = MathTex('X\\neq f(x)!').next_to(f13, DOWN*1.4, aligned_edge=LEFT)
+		self.play(Write(f19))
+		self.end_fragment()
+		
+		self.play(Unwrite(f19))
+		self.play(Write(f14))
+		self.end_fragment()
+		f20 = MathTex('C = ').next_to(f14, DOWN*1.4, aligned_edge=LEFT)
+		num3 = DecimalNumber(1).next_to(f20, RIGHT*0.4)
+		self.play(Write(VGroup(f20, num3)))
+		self.end_fragment()
+
+		darr2 = np.concatenate((darr1, np.zeros(n)))
+		for i in range(81):
+			multilpyer = 1 + (rate_functions.smooth(i/80))
+			cutarr = darr2[0:math.floor(n/multilpyer)]/multilpyer
+			pl2 = polygon_from_arr(cutarr, ax2, [0, 1])
+			num3.set_value(multilpyer)
+			l1.move_to((ax1.coords_to_point(*(M*multilpyer, 0, 0))[0],l1.get_y(), 0))
+			l1t.move_to((ax1.coords_to_point(*(M*multilpyer, 0, 0))[0],l1t.get_y(), 0))
+			self.play(Transform(pl1, pl2, run_time=0.02))
+
+		self.wait()	
+
+		for i in range(81):
+			multilpyer = 2 - 1.5*(rate_functions.smooth(i/80))
+			cutarr = darr2[0:math.floor(n/multilpyer)]/multilpyer
+			pl2 = polygon_from_arr(cutarr, ax2, [0, 1])
+			num3.set_value(multilpyer)
+			l1.move_to((ax1.coords_to_point(*(M*multilpyer, 0, 0))[0],l1.get_y(), 0))
+			l1t.move_to((ax1.coords_to_point(*(M*multilpyer, 0, 0))[0],l1t.get_y(), 0))
+			self.play(Transform(pl1, pl2, run_time=0.02))
+
+		self.wait()
+
+		for i in range(81):
+			multilpyer = 0.5 + 0.5*(rate_functions.smooth(i/80))
+			cutarr = darr2[0:math.floor(n/multilpyer)]/multilpyer
+			pl2 = polygon_from_arr(cutarr, ax2, [0, 1])
+			num3.set_value(multilpyer)
+			l1.move_to((ax1.coords_to_point(*(M*multilpyer, 0, 0))[0],l1.get_y(), 0))
+			l1t.move_to((ax1.coords_to_point(*(M*multilpyer, 0, 0))[0],l1t.get_y(), 0))
+			self.play(Transform(pl1, pl2, run_time=0.02))
+		self.end_fragment(fragment_type=LOOP)
+
+		self.play(Unwrite(VGroup(f20, num3)))
+		self.play(Write(f15))
+		self.end_fragment()
+
+		self.play(Unwrite(pl1))
+		f21 = MathTex('M(\sum_{i=1}^{1}X_{i}) = 0.5').next_to(f15, DOWN*1.4, aligned_edge=LEFT)
+		self.play(Write(f21))
+
+		ax3 = Axes([0, 4], y_range=[0, 1, 0.2], x_length=5, y_length=3, 
+			axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False}
+			).shift(DOWN + LEFT*3.5)
+		ax4 = Axes([0, 1], y_range=[0, 1], x_length=5, y_length=3).shift(DOWN + LEFT*3.5)
+		ax5 = ax1.copy()
+		self.play(Transform(ax1, ax3))
+		darr3 = np.full(100, 1)
+		pl5 = polygon_from_arr(darr3, ax3, [0, 1])
+		self.play(Write(pl5))
+		self.remove(VGroup(l1, l1t))
+		self.add(l1, l1t)
+		self.play(l1.animate.move_to((ax1.coords_to_point(*(0.5, 0, 0))[0],l1.get_y(), 0)),
+			l1t.animate.move_to((ax1.coords_to_point(*(0.5, 0, 0))[0],l1t.get_y(), 0)))
+		self.end_fragment()
+
+		def convolution(arr1, arr2):
+			res = []
+			for i in range(len(arr1)+len(arr2)):
+				s = 0
+				for j in range(len(arr1)):
+					if i - j >= 0 and i - j < len(arr2):
+						s += arr1[j]*arr2[i-j]
+				res.append(s)
+			sum = np.array(res).sum()
+			return	np.array(res)*50/sum
+		
+		darr4 = convolution(darr3, darr3)
+		pl6 = polygon_from_arr(np.concatenate((darr4, np.zeros(200))), ax4, [0, 0.5])
+		f22 = MathTex('M(\sum_{i=1}^{2}X_{i}) = 1').next_to(f15, DOWN*1.4, aligned_edge=LEFT)
+		self.play(Transform(f21, f22))
+		self.play(Transform(pl5, pl6),
+			l1.animate.move_to((ax1.coords_to_point(*(1, 0, 0))[0],l1.get_y(), 0)),
+			l1t.animate.move_to((ax1.coords_to_point(*(1, 0, 0))[0],l1t.get_y(), 0)))
+		self.end_fragment()
+
+		darr5 = convolution(darr3, darr4)
+		pl7 = polygon_from_arr(np.concatenate((darr5, np.zeros(100))), ax4, [0, 0.75])
+		f23 = MathTex('M(\sum_{i=1}^{3}X_{i}) = 1.5').next_to(f15, DOWN*1.4, aligned_edge=LEFT)
+		self.play(Transform(f21, f23))
+		self.play(Transform(pl5, pl7),
+			l1.animate.move_to((ax1.coords_to_point(*(1.5, 0, 0))[0],l1.get_y(), 0)),
+			l1t.animate.move_to((ax1.coords_to_point(*(1.5, 0, 0))[0],l1t.get_y(), 0)))
+		self.end_fragment()
+
+		darr6 = convolution(darr3, darr5)
+		pl8 = polygon_from_arr(darr6, ax4, [0, 1])
+		f24 = MathTex('M(\sum_{i=1}^{4}X_{i}) = 2').next_to(f15, DOWN*1.4, aligned_edge=LEFT)
+		self.play(Transform(f21, f24))
+		self.play(Transform(pl5, pl8),
+			l1.animate.move_to((ax1.coords_to_point(*(2, 0, 0))[0],l1.get_y(), 0)),
+			l1t.animate.move_to((ax1.coords_to_point(*(2, 0, 0))[0],l1t.get_y(), 0)))
+		self.end_fragment()
+		ax9 = Axes([0, 4], [0, 0.41, 0.1], x_length=5, y_length= 3, 
+			 axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False}).shift(DOWN+LEFT*3.5)
+		ax6 = Axes([0, 1], [0, 0.41], x_length=5, y_length= 3).shift(DOWN+LEFT*3.5)
+		pl9 = polygon_from_arr(darr6, ax6, [0, 1])
+		self.play(Transform(ax1, ax9), Transform(pl5, pl9))
+		# darr7 = np.array([math.exp(-((x/42.5-2.31)**2))/3 for x in range(200)])
+		# pl10 = polygon_from_arr(darr7, ax6, [0, 1]).set_color(WHITE).set_fill(opacity=0)
+		# self.play(Write(pl10))
+		self.end_fragment()
+
+		self.play(Unwrite(VGroup(f21, pl5)), Transform(ax1, ax5))
+		self.play(Write(f16))
+
+		pl10 = polygon_from_arr(darr1, ax2, [0, 1])
+	
+		self.play(Write(pl10),
+			l1.animate.move_to((ax1.coords_to_point(*(M, 0, 0))[0],l1.get_y(), 0)),
+			l1t.animate.move_to((ax1.coords_to_point(*(M, 0, 0))[0],l1t.get_y(), 0)))
+		self.remove(VGroup(l1, l1t))
+		self.add(VGroup(l1, l1t))
+		self.end_fragment()
+		f25 = MathTex('a = ').next_to(f16, DOWN*1.4, aligned_edge=LEFT)
+		num4 = DecimalNumber(1).next_to(f25, RIGHT*0.4)
+		f26 = MathTex('b = ').next_to(f25, DOWN*1.4, aligned_edge=LEFT)
+		num5 = DecimalNumber(0).next_to(f26, RIGHT*0.4)
+		self.play(Write(VGroup(f25, num4, f26, num5)))
+		self.end_fragment(fragment_type=NO_PAUSE)
+
+		for i in range(81):
+			multilpyer = 1 + (rate_functions.smooth(i/80))*0.5
+			shift = 0
+			cutarr = darr2[math.floor(shift*n/4/multilpyer):math.floor((4 + shift)*n/4/multilpyer)]/multilpyer
+			pl11 = polygon_from_arr(cutarr, ax2, [0, 1])
+			num4.set_value(multilpyer)
+			num5.set_value(-shift)
+			l1.move_to((ax1.coords_to_point(*(M*multilpyer - shift, 0, 0))[0],l1.get_y(), 0))
+			l1t.move_to((ax1.coords_to_point(*(M*multilpyer - shift, 0, 0))[0],l1t.get_y(), 0))
+			self.play(Transform(pl10, pl11, run_time=0.02))
+
+		self.wait()
+
+		for i in range(81):
+			multilpyer = 1.5
+			shift = 0 + rate_functions.smooth(i/80)*2
+			cutarr = darr2[math.floor(shift*n/4/multilpyer):math.floor((4 + shift)*n/4/multilpyer)]/multilpyer
+			pl11 = polygon_from_arr(cutarr, ax2, [0, 1])
+			num4.set_value(multilpyer)
+			num5.set_value(-shift)
+			l1.move_to((ax1.coords_to_point(*(M*multilpyer - shift, 0, 0))[0],l1.get_y(), 0))
+			l1t.move_to((ax1.coords_to_point(*(M*multilpyer - shift, 0, 0))[0],l1t.get_y(), 0))
+			self.play(Transform(pl10, pl11, run_time=0.02))
+		self.wait()
+
+		for i in range(81):
+			multilpyer = 1.5 - rate_functions.smooth(i/80)*0.8
+			shift = 2 - rate_functions.smooth(i/80)*3
+			if(shift*n/4/multilpyer < 0):
+				cutarr = np.concatenate((np.zeros(-math.floor(shift*n/4/multilpyer)),
+					darr2[0:math.floor((4 + shift)*n/4/multilpyer)]/multilpyer))
+			else:
+				cutarr = darr2[math.floor(shift*n/4/multilpyer):math.floor((4 + shift)*n/4/multilpyer)]/multilpyer
+			pl11 = polygon_from_arr(cutarr, ax2, [0, 1])
+			num4.set_value(multilpyer)
+			num5.set_value(-shift)
+			l1.move_to((ax1.coords_to_point(*(M*multilpyer - shift, 0, 0))[0],l1.get_y(), 0))
+			l1t.move_to((ax1.coords_to_point(*(M*multilpyer - shift, 0, 0))[0],l1t.get_y(), 0))
+			self.play(Transform(pl10, pl11, run_time=0.02))
+		self.wait()	
+
+		for i in range(81):
+			multilpyer = 0.7 + rate_functions.smooth(i/80)*0.3
+			shift = - 1 + rate_functions.smooth(i/80)*1
+			if(shift*n/4/multilpyer < 0):
+				cutarr = np.concatenate((np.zeros(-math.floor(shift*n/4/multilpyer)),
+					darr2[0:math.floor((4 + shift)*n/4/multilpyer)]/multilpyer))
+			else:
+				cutarr = darr2[math.floor(shift*n/4/multilpyer):math.floor((4 + shift)*n/4/multilpyer)]/multilpyer			
+			pl11 = polygon_from_arr(cutarr, ax2, [0, 1])
+			num4.set_value(multilpyer)
+			num5.set_value(-shift)
+			l1.move_to((ax1.coords_to_point(*(M*multilpyer - shift, 0, 0))[0],l1.get_y(), 0))
+			l1t.move_to((ax1.coords_to_point(*(M*multilpyer - shift, 0, 0))[0],l1t.get_y(), 0))
+			self.play(Transform(pl10, pl11, run_time=0.02))
+
+		self.end_fragment(fragment_type=LOOP)	
+
+		self.play(Unwrite(VGroup(f25, num4, f26, num5)))
+		self.play(Write(f17))
+		f27 = Text('X та Y - незалежні').scale(0.8).next_to(f17, DOWN*1.4, aligned_edge=LEFT)
+		self.play(Write(f27))
+		self.end_fragment()
+
+		self.play(Unwrite(f27))
+		self.play(Write(f18))
+		self.play(Unwrite(pl10))
+		ax7 = Axes([-2, 2], [0, 0.56, 0.1], x_length=5, y_length=3,
+			axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False}).shift(DOWN+LEFT*3.5)
+		ax8 = Axes([0, 1], [0, 0.56, 0.1], x_length=5, y_length=3,
+			axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False}).shift(DOWN+LEFT*3.5)
+		self.play(Transform(ax1, ax7))
+		arr2  = np.array([math.exp(-((4*x/n-2)**4)) for x in range(n)])
+		darr8 = arr2*n/4/arr2.sum()
+		pl11 = polygon_from_arr(darr8, ax8, [0, 1])
+		self.play(Write(pl11),
+			l1.animate.move_to((ax1.coords_to_point(*(0, 0, 0))[0],l1.get_y(), 0)),
+			l1t.animate.move_to((ax1.coords_to_point(*(0, 0, 0))[0],l1t.get_y(), 0)))
+		self.remove(l1, l1t)
+		self.add(l1, l1t)
+		self.end_fragment()
+
+		t3 = Text('3.2 Дисперсія', font_size=32).align_on_border(UL)
+		self.play(Transform(t1, t3), Unwrite(VGroup(text3, text2, l1, l1t, pl11, ax1)))
+		self.end_fragment()
+
+		
+class NumbericalVariance(PresentationScene):
+	def construct(self):
+		t1 = Text('3.2 Дисперсія', font_size=32).align_on_border(UL)
+		self.add(t1)
+		self.end_fragment()
+		n = 500
+
 
 class TextScene(PresentationScene):
 	def construct(self):
