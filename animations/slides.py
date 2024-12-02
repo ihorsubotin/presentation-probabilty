@@ -1611,11 +1611,13 @@ class StatisticalMoment(PresentationScene):
 		self.wait(3)
 		self.end_fragment(fragment_type=LOOP)
 
+		t2_1 = Text('3.5 Центральний момент порядку k',font_size=32).align_on_border(UL) 
 		f4 = MathTex('\mu_{k} = M([X-M(X)]^{k})').shift(2*UP+LEFT*2)
 		f5 = MathTex(' = \int_{-\infty}^{\infty}(x-M(X))^{k}f(x)dx').next_to(f4, RIGHT)
 
 		self.play(Unwrite(VGroup(f2, f3_0, f3_1, num1_1, f3_2, num1_2, f3_3, num1_3, f3_4, num1_4)))
-		self.play(Transform(f1, f4))
+		self.play(Transform(t1, t2_1), Transform(f1, f4))
+
 		
 		self.end_fragment()
 		self.play(Write(f5))
@@ -1695,14 +1697,19 @@ class StatisticalMoment(PresentationScene):
 		self.end_fragment(fragment_type=LOOP)
 
 		self.play(Unwrite(VGroup(f1, f5)))
-		f7 = MathTex('\gamma_{1} = As=\\frac{\mu_{3}}{\sigma_{3}}=\,').shift(2*UP)
-		t3 = Text('3.5 Коефіцієнт асиметрії',font_size=32).align_on_border(UL)
+		f7 = MathTex('\gamma_{1} = As=\\frac{\mu_{3}}{\sigma^{3}}=\,').shift(2*UP)
+		t3 = Text('3.6 Коефіцієнт асиметрії',font_size=32).align_on_border(UL)
 		self.play(TransformFromCopy(f6_3, f7), Transform(t1, t3))
 		self.end_fragment()
 
 		As_1 = mu1_3/math.pow(mu1_2, 1.5)
 		num3 = DecimalNumber(As_1).next_to(f7, RIGHT).shift(UP*0.08)
 		self.play(Write(num3))
+
+		M3_1 = nu1_1
+		l3_1 = Line(start=ax1.c2p(*(M3_1, 0.8, 0)), end=ax1.c2p(*(M3_1, 0, 0)), color=RED)
+		l3_1t = MathTex('M(X)', font_size=24, color=RED).shift(ax1.c2p(*(M3_1, -0.22, 0)))
+		self.play(Write(VGroup(l3_1, l3_1t)))
 		self.end_fragment()
 
 		As_2 = mu2_3/math.pow(mu2_2, 1.5)
@@ -1712,7 +1719,9 @@ class StatisticalMoment(PresentationScene):
 			ChangingDecimal(num2_2, lambda alpha: mu1_2 + (mu2_2 - mu1_2)* alpha),
 			ChangingDecimal(num2_3, lambda alpha: mu1_3 + (mu2_3 - mu1_3)* alpha),
 			ChangingDecimal(num2_4, lambda alpha: mu1_4 + (mu2_4 - mu1_4)* alpha),
-			ChangingDecimal(num3, lambda alpha: As_1 + (As_2 - As_1)* alpha)
+			ChangingDecimal(num3, lambda alpha: As_1 + (As_2 - As_1)* alpha),
+			l3_1.animate.set_coord(ax1.c2p(*(nu3_1, 0, 0))[0], 0),
+			l3_1t.animate.set_coord(ax1.c2p(*(nu3_1, 0, 0))[0], 0)
 		)
 		self.wait(2)
 
@@ -1723,7 +1732,9 @@ class StatisticalMoment(PresentationScene):
 			ChangingDecimal(num2_2, lambda alpha: mu2_2 + (mu4_2 - mu2_2)* alpha),
 			ChangingDecimal(num2_3, lambda alpha: mu2_3 + (mu4_3 - mu2_3)* alpha),
 			ChangingDecimal(num2_4, lambda alpha: mu2_4 + (mu4_4 - mu2_4)* alpha),
-			ChangingDecimal(num3, lambda alpha: As_2 + (As_3 - As_2)* alpha)
+			ChangingDecimal(num3, lambda alpha: As_2 + (As_3 - As_2)* alpha),
+			l3_1.animate.set_coord(ax1.c2p(*(nu4_1, 0, 0))[0], 0),
+			l3_1t.animate.set_coord(ax1.c2p(*(nu4_1, 0, 0))[0], 0)
 		)
 		self.wait(2)
 
@@ -1733,13 +1744,16 @@ class StatisticalMoment(PresentationScene):
 			ChangingDecimal(num2_2, lambda alpha: mu4_2 + (mu1_2 - mu4_2)* alpha),
 			ChangingDecimal(num2_3, lambda alpha: mu4_3 + (mu1_3 - mu4_3)* alpha),
 			ChangingDecimal(num2_4, lambda alpha: mu4_4 + (mu1_4 - mu4_4)* alpha),
-			ChangingDecimal(num3, lambda alpha: As_3 + (As_1 - As_3)* alpha)
+			ChangingDecimal(num3, lambda alpha: As_3 + (As_1 - As_3)* alpha),
+			l3_1.animate.set_coord(ax1.c2p(*(M3_1, 0, 0))[0], 0),
+			l3_1t.animate.set_coord(ax1.c2p(*(M3_1, 0, 0))[0], 0)
 		)
 		self.wait(2)
 		self.end_fragment(fragment_type=LOOP)
 
+		self.play(Unwrite(VGroup(l3_1, l3_1t)))
 		self.play(Unwrite(VGroup(f7, num3)))
-		f8 = MathTex('\\frac{\mu_{4}}{\sigma_{4}}=\,').shift(2*UP)
+		f8 = MathTex('\\frac{\mu_{4}}{\sigma^{4}}=\,').shift(2*UP)
 		self.play(TransformFromCopy(f6_4, f8))
 		self.end_fragment()
 
@@ -1819,7 +1833,7 @@ class StatisticalMoment(PresentationScene):
 
 		self.end_fragment(fragment_type=LOOP)
 		f9 = MathTex('\gamma_{2} =E = \\frac{\mu_{4}}{\sigma_{4}} - 3=\,').next_to(num4, LEFT).shift(DOWN*0.08)
-		t4 = Text('3.6 Коефіцієнт ексцесу',font_size=32).align_on_border(UL)
+		t4 = Text('3.7 Коефіцієнт ексцесу',font_size=32).align_on_border(UL)
 		self.play(Transform(f8, f9), Transform(t1, t4),
 			ChangingDecimal(num4, lambda alpha: E_4 + (0 - E_4)* alpha)
 		)
@@ -1895,7 +1909,7 @@ class StatisticalMoment(PresentationScene):
 		self.end_fragment(fragment_type=LOOP)
 
 		self.play(Unwrite(VGroup(f8, num4, f6_0, f6_1, num2_1, f6_2, num2_2, f6_3, num2_3, f6_4, num2_4)))
-		t5 = Text('3.7 Мода',font_size=32).align_on_border(UL)
+		t5 = Text('3.8 Мода',font_size=32).align_on_border(UL)
 		f10 = MathTex('Mo(X) = max(f(x))').shift(UP*2)
 		self.play(Write(f10), Transform(t1, t5))
 		self.end_fragment()
@@ -1905,7 +1919,7 @@ class StatisticalMoment(PresentationScene):
 		self.play(Write(VGroup(l1, l1t)))
 		self.end_fragment()
 		
-		arr11 = np.array([math.exp(-((x-125)*9/n)**2)/2 + math.exp(-((x-325)*5/n)**2) for x in range(n)])
+		arr11 = np.array([math.exp(-((x-125)*7/n)**2)+ math.exp(-((x-325)*7/n)**2) for x in range(n)])
 		darr11 = arr11*n/4/arr11.sum()
 		pl11 = polygon_from_arr(darr11*8/6, ax2, [0, 1])
 
@@ -1913,7 +1927,7 @@ class StatisticalMoment(PresentationScene):
 			axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False}).shift(LEFT*3.5 + DOWN)
 		self.play(Transform(ax1, ax3),Transform(pl1, pl11), Unwrite(VGroup(l1, l1t)))
 
-		l2 = Line(ax3.coords_to_point(*(1, 0, 0)), ax3.coords_to_point(*(1, 0.51, 0)), color=RED, stroke_width=6)
+		l2 = Line(ax3.coords_to_point(*(1, 0, 0)), ax3.coords_to_point(*(1, 0.61, 0)), color=RED, stroke_width=6)
 		l2t = MathTex('Mo(X)', font_size=32, color=RED).shift(ax3.coords_to_point(*(1, -0.15)))
 		l3 = Line(ax3.coords_to_point(*(2.6, 0, 0)), ax3.coords_to_point(*(2.6, 0.61, 0)), color=RED, stroke_width=6)
 		l3t = MathTex('Mo(X)', font_size=32, color=RED).shift(ax3.coords_to_point(*(2.6, -0.15)))
@@ -1933,7 +1947,7 @@ class StatisticalMoment(PresentationScene):
 
 		self.play(Unwrite(VGroup(f11, f10, ax1, pl1)))
 
-		t6 = Text('3.8 Медіана',font_size=32).align_on_border(UL)
+		t6 = Text('3.9 Медіана',font_size=32).align_on_border(UL)
 		self.play(Transform(t1, t6))
 
 		f12 = MathTex('F(Me) = 0.5').shift(2*UP)
@@ -1992,7 +2006,7 @@ class StatisticalMoment(PresentationScene):
 		self.play(Write(VGroup(l5, l5t)))
 		self.end_fragment()
 
-		t7 = Text('3.9 Квантіль рівня p',font_size=32).align_on_border(UL)
+		t7 = Text('3.10 Квантіль рівня p',font_size=32).align_on_border(UL)
 		f14 = MathTex('F(x_{p}) = p').shift(UP*2)
 		f15 = MathTex('p =\,').next_to(num5, LEFT).shift(UP*1)
 		f16 = MathTex('F(p) =\,').next_to(f15, DOWN*1.4, aligned_edge=LEFT)
@@ -2291,7 +2305,7 @@ class Distributions(PresentationScene):
 		self.play(Transform(pl3_1, pl3_4), ChangingNumber(num3_1, 0.4))
 		self.wait(2)
 
-		self.play(Transform(pl3_1, pl3_3), ChangingNumber(num3_1, 1))
+		self.play(Transform(pl3_1, pl3_2), ChangingNumber(num3_1, 1))
 		self.wait(2)
 
 		self.end_fragment(fragment_type=LOOP)
@@ -2420,7 +2434,7 @@ class Distributions(PresentationScene):
 
 		sequance = np.array(range(n))*5/n
 		D2_1 = np.dot(arr2_3, (sequance-2.5)**2)*5/n
-		sigma2_1 = 1# math.sqrt(D2_1)
+		sigma2_1 = math.sqrt(D2_1)
 		f2_sigma = MathTex('\sigma =\,').next_to(f2_mu, DOWN*1.4, aligned_edge=LEFT)
 		num2_3 = DecimalNumber(sigma2_1).next_to(f2_sigma, RIGHT)
 		self.play(Write(VGroup(f2_sigma, num2_3)))
@@ -2449,6 +2463,7 @@ class Distributions(PresentationScene):
 		darr2_1 = calculate_integral(arr2_4)*5/n
 		pl2_5 = polygon_from_arr(darr2_1, ax_rn, [0, 1])
 		self.play(Write(VGroup(ax_r1c, pl2_5)))
+		self.end_fragment(fragment_type=NO_PAUSE)
 		
 		def transform_d2(mu, sigma, dt = 0.1):
 			arr = np.array([math.exp(-((5*x/n - mu)**2)/(2*sigma**2))/math.sqrt(2*math.pi*sigma**2) for x in range(n)])
@@ -2554,6 +2569,7 @@ class Distributions(PresentationScene):
 			VGroup(l6, l6t).animate.set_coord(ax_l1.c2p(*(4, 0, 0))[0], 0),
 			ChangingNumber(num2_3, 1.5)
 		)
+		self.end_fragment()
 		
 		for i in range(1, 81):
 			alpha = rate_functions.smooth(i/80)
@@ -2598,13 +2614,14 @@ class Distributions(PresentationScene):
 
 		self.play(f2_6.animate.shift(UP))
 
-		t5 = Text('4.4 Логонормальний розподіл', font_size=32).align_on_border(UL)
+		t5 = Text('4.4 Логнормальний розподіл', font_size=32).align_on_border(UL)
 		self.play(Transform(t1, t5))
 
 		f4_1 = MathTex('X = e^{Y}, Y -\,').shift(RIGHT)
 		f4_2 = Text('нормальний розподіл', font_size=32).next_to(f4_1)
 		self.play(Write(VGroup(f4_1, f4_2)))
-
+		self.end_fragment()
+		
 		ax_l4 = Axes(x_range=[0, 1, 0.2], y_range=[0, 0.7, 0.1], x_length=5, y_length=3,
 		   axis_config={"include_ticks": True, "include_numbers":True, "include_tip": False},
 		   x_axis_config={"scaling": LogBase(5)}).shift(LEFT*3.5 + DOWN*1.5)
@@ -2667,6 +2684,9 @@ class Distributions(PresentationScene):
 		self.wait(2)
 
 		transform_d4(0, 1)
+		self.wait(2)
+
+		transform_d4(0, 2)
 		self.wait(2)
 
 		transform_d4(1, 1)
